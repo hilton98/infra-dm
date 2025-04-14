@@ -40,9 +40,11 @@ resource "aws_s3_bucket_policy" "allow_all_valid_iam" {
     Version = "2012-10-17"
     Statement = [
       {
-        Sid       = "AllowAllActionsForAllUsersWithValidIAM"
+        Sid       = "AllowActionsForSpecificUser"
         Effect    = "Allow"
-        Principal = "*"
+        Principal = {
+          AWS = "arn:aws:iam::730335481760:user/brr_ga"
+        }
         Action    = "s3:*"
         Resource = [
           "arn:aws:s3:::static-app-${var.bucket_name}",
