@@ -1,5 +1,5 @@
 resource "aws_s3_bucket" "static_app_bucket" {
-  bucket = "static-app-${bucket_name}"
+  bucket = "static-app-${var.bucket_name}"
 
   website {
     index_document = "index.html"
@@ -7,7 +7,7 @@ resource "aws_s3_bucket" "static_app_bucket" {
   }
 }
 
-resource "aws_s3_bucket_public_acess_block" "static_app_bucket" {
+resource "aws_s3_bucket_public_access_block" "static_app_bucket" {
   bucket = aws_s3_bucket.static_app_bucket.id
   block_public_acls = false
   block_public_policy = false
