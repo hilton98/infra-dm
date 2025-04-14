@@ -1,0 +1,50 @@
+name: Deploy DM APP
+
+on:
+  repository_dispatch:
+    types: [update-dm-app]
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout infra repository
+        uses: actions/checkout@v3
+
+      - name: Config AWS CLI
+        uses: aws-actions/configure-aws-credentials@v2
+        with:
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws-region: us-east-1
+
+      - name: Apply Terraform 
+        run: |
+          cd terraform/modules/s3
+          terraform init
+          terraform apply -auto-approve -var="bucket_name=DMAPP"
+
+      - name: Clone DM APP Repository
+        uses: actions/checkout@v3
+        with:
+          repository: hilton98/device-management-app
+          token: ${{ secrets.REPO_INFRA_PAT }}
+          path: frontend
+
+      - name: Install Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: lts/*
+
+      - name: Install dependencies
+        working-directory: frontend
+        run: npm install
+
+      - name: Angular Build
+        working-directory: frontend
+        run: npm run build -- --configuration production
+
+      - name: Upload for S3
+        run: |
+          aws s3 sync frontend/dist/device-management-app/ s3://DMAPP --delete
