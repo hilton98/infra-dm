@@ -1,5 +1,10 @@
 #!/bin/bash
 
+DB_HOST=${DB_HOST}
+DB_NAME=${DB_NAME}
+DB_USERNAME=${DB_USERNAME}
+DB_PASSWORD=${DB_PASSWORD}
+
 echo "Update System..."
 sudo apt update && sudo apt upgrade -y
 
@@ -15,6 +20,14 @@ sudo apt-get install -y nodejs
 node -v
 
 APP_DIR="/home/ubuntu/app"
+
+echo "Create .env..."
+cat <<EOF > .env
+DB_HOST=${DB_HOST}
+DB_USERNAME=${DB_USERNAME}
+DB_PASSWORD=${DB_PASSWORD}
+DB_NAME=${DB_NAME}
+EOF
 
 if [ ! -d "$APP_DIR" ]; then
   echo "Directory $APP_DIR not found. Cloning repository..."

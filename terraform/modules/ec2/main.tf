@@ -41,7 +41,12 @@ resource "aws_instance" "dm_ec2" {
   key_name      = var.key_name
   security_groups = [aws_security_group.dm_sg.name]
 
-  user_data = templatefile("${path.module}/../../scripts/deploy-api.sh", {})
+  user_data = templatefile("${path.module}/../../scripts/deploy-api.sh", {
+    DB_HOST = var.db_host
+    DB_USERNAME = var.db_username
+    DB_PASSWORD = var.db_password
+    DB_NAME = var.db_name
+  })
 
   tags = {
     Name = "DM-API-Server"
