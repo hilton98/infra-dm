@@ -9,6 +9,7 @@ resource "aws_s3_bucket" "static_app_bucket" {
 
 resource "aws_s3_bucket_public_access_block" "static_app_bucket" {
   bucket = aws_s3_bucket.static_app_bucket.id
+
   block_public_acls       = false
   block_public_policy     = false
   ignore_public_acls      = false
@@ -50,4 +51,6 @@ resource "aws_s3_bucket_policy" "allow_all_valid_iam" {
       }
     ]
   })
+
+  depends_on = [aws_s3_bucket_public_access_block.static_app_bucket]
 }
