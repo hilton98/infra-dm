@@ -2,7 +2,7 @@
 
 if [ ! -d "/home/ubuntu/app" ]; then
   echo "Directory /home/ubuntu/app not found. Cloning repository..."
-  git clone https://github.com/hilton98/device-management-api.git /home/ubuntu/app
+  git clone https://github.com/hilton98/project-teste.git /home/ubuntu/app
 else
   echo "Directory /home/ubuntu/app found. Update repository..."
   cd /home/ubuntu/app
