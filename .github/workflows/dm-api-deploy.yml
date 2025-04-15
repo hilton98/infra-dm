@@ -23,38 +23,8 @@ jobs:
         with:
           terraform_version: 1.6.6
 
-      - name: Apply Terraform 
+      - name: Deploy DM api
         run: |
           cd terraform/modules/ec2
           terraform init
-          terraform import aws_instance.dm_ec2 i-0476fdd7b1fdb05a6
-          terraform plan -var="subnet_id=${{ secrets.SUBNET_ID }}" -var="vpc_id=${{ secrets.VPC_ID }}" -var="key_name=${{ secrets.KEY_NAME }}"
-          terraform apply
-
-      - name: Install Node.js
-        uses: actions/setup-node@v4
-        with:
-          node-version: lts/*
-
-      - name: Deploy NestJS SSH
-        uses: appleboy/ssh-action@v0.1.10
-        with:
-          host: ${{ secrets.EC2_HOST }}
-          username: ubuntu
-          key: ${{ secrets.EC2_SSH_PRIVATE_KEY }}
-          script: |
-            if [ ! -d "/home/ubuntu/app" ]; then
-              git clone https://github.com/hilton98/device-management-api.git app
-            else
-              cd app
-              git pull origin main
-            fi
-
-            cd /home/ubuntu/app
-
-            # Instalar dependências
-            npm install
-            npm run build
-
-            sudo npm install -g pm2
-            pm2 start dist/main.js --name nest-backend || pm2 restart nest-backend
+          terraform apply -auto-approve -var="key_name=${{ secrets.KEY_NAME }}"
