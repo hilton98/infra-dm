@@ -22,16 +22,14 @@ node -v
 APP_DIR="/home/ubuntu/app"
 
 echo "Create .env..."
-cat <<EOF > .env
-DB_HOST=${DB_HOST}
-DB_USERNAME=${DB_USERNAME}
-DB_PASSWORD=${DB_PASSWORD}
-DB_NAME=${DB_NAME}
-EOF
+echo "DB_HOST=${DB_HOST}" > .env
+echo "DB_USERNAME=${DB_USERNAME}" >> .env
+echo "DB_PASSWORD=${DB_PASSWORD}" >> .env
+echo "DB_NAME=${DB_NAME}" >> .env
 
 if [ ! -d "$APP_DIR" ]; then
   echo "Directory $APP_DIR not found. Cloning repository..."
-  git clone https://github.com/hilton98/project-teste.git "$APP_DIR"
+  git clone https://github.com/hilton98/device-management-api.git "$APP_DIR"
 else
   echo "Directory $APP_DIR found. Update repository..."
   cd "$APP_DIR"
