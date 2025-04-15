@@ -52,4 +52,4 @@ jobs:
 
       - name: Upload for S3
         run: |
-          aws s3 sync frontend/dist/device-management-app/ s3://static-app-dm-app --delete
+          aws s3 sync frontend/dist/device-management-app/browser/ s3://static-app-dm-app --delete
