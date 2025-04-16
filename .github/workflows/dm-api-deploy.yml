@@ -18,5 +18,7 @@ jobs:
             cd /home/ubuntu/app
             sudo git pull origin main
             sudo npm install
+            sudo npm run build
             sudo npm run migration:run
-            sudo pm2 restart dist/main.js
+            sudo pwd
+            pm2 start dist/main.js --name dm-api || pm2 restart dm-api
