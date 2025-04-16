@@ -19,4 +19,4 @@ jobs:
             sudo git pull origin main
             sudo npm install
             sudo npm run migration:run
-            sudo pm2 restart dm-api
+            sudo pm2 restart dist/main.js
