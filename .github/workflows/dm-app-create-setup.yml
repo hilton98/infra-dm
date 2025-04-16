@@ -1,4 +1,4 @@
-name: Deploy DM APP
+name: Create DM APP Infra
 
 on:
   repository_dispatch:
