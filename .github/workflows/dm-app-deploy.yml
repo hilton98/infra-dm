@@ -48,7 +48,7 @@ jobs:
 
       - name: Angular Build
         working-directory: frontend
-        run: ng build --configuration=production
+        run: npm run build -- --configuration production
 
       - name: Upload for S3
         run: |
