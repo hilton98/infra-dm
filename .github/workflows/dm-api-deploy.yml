@@ -16,7 +16,7 @@ jobs:
           key: ${{ secrets.EC2_SSH_PRIVATE_KEY }}
           script: |
             cd /home/ubuntu/app
-            git pull origin main
-            npm install
-            npm run migration:run
-            pm2 restart dm-api
+            sudo git pull origin main
+            sudo npm install
+            sudo npm run migration:run
+            sudo pm2 restart dm-api
