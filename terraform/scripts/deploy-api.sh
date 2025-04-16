@@ -21,11 +21,11 @@ node -v
 
 APP_DIR="/home/ubuntu/app"
 
-echo "Create .env..."
-echo "DB_HOST=${DB_HOST}" > .env
-echo "DB_USERNAME=${DB_USERNAME}" >> .env
-echo "DB_PASSWORD=${DB_PASSWORD}" >> .env
-echo "DB_NAME=${DB_NAME}" >> .env
+sudo echo "Create .env..."
+sudo echo "DB_HOST=${DB_HOST}" > .env
+sudo echo "DB_USERNAME=${DB_USERNAME}" >> .env
+sudo echo "DB_PASSWORD=${DB_PASSWORD}" >> .env
+sudo echo "DB_NAME=${DB_NAME}" >> .env
 
 if [ ! -d "$APP_DIR" ]; then
   echo "Directory $APP_DIR not found. Cloning repository..."
@@ -38,11 +38,14 @@ fi
 
 cd "$APP_DIR"
 
-echo "Instaling API dependencies..."
-npm install
+echo "Installing API dependencies..."
+sudo npm install
+
+echo "Run Migrations..."
+sudo npm run migration:run
 
 echo "Build API..."
-npm run build
+sudo npm run build
 
 echo "Installing PM2..."
 sudo npm install -g pm2
