@@ -16,7 +16,7 @@ jobs:
           key: ${{ secrets.EC2_SSH_PRIVATE_KEY }}
           script: |
             cd /home/ubuntu/app
-            pm2 delete dm-api || true
+            pm2 kill
             git pull origin main
             npm install
             npm run build
