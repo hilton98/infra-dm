@@ -2,13 +2,16 @@ name: Deploy DM APP
 
 on:
   repository_dispatch:
-    types: [deploy-dm-app]
+    types: [create-structure-dm-app]
 
 jobs:
   deploy:
     runs-on: ubuntu-latest
 
     steps:
+      - name: Checkout infra repository
+        uses: actions/checkout@v3
+
       - name: Config AWS CLI
         uses: aws-actions/configure-aws-credentials@v3
         with:
@@ -16,9 +19,16 @@ jobs:
           aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
           aws-region: us-east-1
 
-      - name: Remove current content from S3 bucket
+      - name: Setup Terraform
+        uses: hashicorp/setup-terraform@v3
+        with:
+          terraform_version: 1.6.6
+
+      - name: Apply Terraform 
         run: |
-          aws s3 rm s3://static-app-dm-app --recursive
+          cd terraform/modules/s3
+          terraform init
+          terraform apply -auto-approve -var="bucket_name=dm-app"
 
       - name: Clone DM APP Repository
         uses: actions/checkout@v3
@@ -40,6 +50,6 @@ jobs:
         working-directory: frontend
         run: npm run build -- --configuration production
 
-      - name: Upload build to S3
+      - name: Upload for S3
         run: |
           aws s3 sync frontend/dist/device-management-app/browser/ s3://static-app-dm-app --delete
